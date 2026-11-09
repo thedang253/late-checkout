@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Cheapest nights at Amex Fine Hotels + Resorts and The Hotel Collection, with what you pay after the Platinum hotel credit.">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Late Checkout</title>
+<style>
+/* Layout: a frosted top bar, a large headline, filled iOS-style controls, then an inset
+   grouped list of stays beside one hotel's calendar. On a phone the hotel opens as a sheet. */
+:root {
+  --bg: #F5F5F7;
+  --surface: #FFFFFF;
+  --ink: #1D1D1F;
+  --muted: #6E6E73;
+  --line: #E2E2E7;
+  --fill: rgba(118, 118, 128, 0.12);
+  --seg-on: #FFFFFF;
+  --accent: #0071E3;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E8F2FD;
+  --good: #248A3D;
+  --good-soft: #E3F6E8;
+  --warn: #B25000;
+  --warn-soft: #FFF1DE;
+  --bar: rgba(245, 245, 247, 0.78);
+  --scrim: rgba(0, 0, 0, 0.38);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 6px 20px rgba(0, 0, 0, 0.05);
+  --h1: #0071E3; --h1-ink: #FFFFFF;
+  --h2: #7DB6F3; --h2-ink: #00264D;
+  --h3: #B5D5F8; --h3-ink: #00305F;
+  --h4: #DCEBFC; --h4-ink: #1D3A5C;
+  --h5: #EFEFF2; --h5-ink: #6E6E73;
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --round: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000; --surface: #1C1C1E; --ink: #F5F5F7; --muted: #98989D; --line: #38383A;
+    --fill: rgba(118, 118, 128, 0.24); --seg-on: #636366;
+    --accent: #0A84FF; --accent-ink: #FFFFFF; --accent-soft: #0B2A4A;
+    --good: #30D158; --good-soft: #0F3319; --warn: #FF9F0A; --warn-soft: #3A2607;
+    --bar: rgba(0, 0, 0, 0.72); --scrim: rgba(0, 0, 0, 0.6); --shadow: none;
+    --h1: #0A84FF; --h1-ink: #00152B; --h2: #0A5DB5; --h2-ink: #FFFFFF;
+    --h3: #0B3F78; --h3-ink: #E5E5EA; --h4: #10294A; --h4-ink: #C7C7CC; --h5: #2C2C2E; --h5-ink: #98989D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #000000; --surface: #1C1C1E; --ink: #F5F5F7; --muted: #98989D; --line: #38383A;
+  --fill: rgba(118, 118, 128, 0.24); --seg-on: #636366;
+  --accent: #0A84FF; --accent-ink: #FFFFFF; --accent-soft: #0B2A4A;
+  --good: #30D158; --good-soft: #0F3319; --warn: #FF9F0A; --warn-soft: #3A2607;
+  --bar: rgba(0, 0, 0, 0.72); --scrim: rgba(0, 0, 0, 0.6); --shadow: none;
+  --h1: #0A84FF; --h1-ink: #00152B; --h2: #0A5DB5; --h2-ink: #FFFFFF;
+  --h3: #0B3F78; --h3-ink: #E5E5EA; --h4: #10294A; --h4-ink: #C7C7CC; --h5: #2C2C2E; --h5-ink: #98989D;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.4; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
+button, input, select { font: inherit; color: inherit; letter-spacing: inherit; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent); outline-offset: 2px; }
+.num, .pay-num, .pay-sub, .cell .pr, .fl .v { font-variant-numeric: tabular-nums; }
+
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.inner { max-width: 1080px; margin: 0 auto; }
+
+/* frosted top bar */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bar); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: 0.5px solid var(--line); padding-block: 11px; }
+.bar .inner { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px; }
+.brand { font-weight: 600; font-size: 17px; letter-spacing: -0.02em; }
+.window { font-size: 13px; color: var(--muted); }
+.window b { color: var(--ink); font-weight: 600; }
+
+/* sample-data note */
+.sample { margin: 14px 0 0; font-size: 14px; color: var(--muted); max-width: 52ch; }
+.sample-tag { display: inline-block; font-size: 12px; font-weight: 600; color: var(--warn); background: var(--warn-soft); padding: 2px 9px; border-radius: 999px; margin-right: 8px; }
+
+/* headline */
+.hero { padding-block: 34px 4px; }
+.hero h1 { margin: 0; font-size: clamp(30px, 6vw, 48px); line-height: 1.07; font-weight: 700; letter-spacing: -0.028em; text-wrap: balance; max-width: 16ch; }
+.lede { margin: 12px 0 0; color: var(--muted); font-size: 17px; line-height: 1.35; max-width: 46ch; }
+
+/* controls: search, three essentials, everything else behind Filters */
+.desk { padding-block: 22px 4px; }
+.desk .inner { display: grid; gap: 12px; }
+.search { position: relative; }
+.search input { width: 100%; height: 46px; padding: 0 14px 0 40px; border: 0; border-radius: 13px; background: var(--fill); font-size: 17px; -webkit-appearance: none; appearance: none; }
+.search input::placeholder { color: var(--muted); }
+.search svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+.ctl-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.seg { display: inline-flex; background: var(--fill); border-radius: 10px; padding: 2px; }
+.seg button { border: 0; background: none; min-width: 52px; height: 34px; padding: 0 14px; border-radius: 8px; font-size: 15px; font-weight: 500; }
+.seg button[aria-pressed="true"] { background: var(--seg-on); font-weight: 600; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 0 0.5px rgba(0, 0, 0, 0.04); }
+.desk select, .credit input, .filters-btn { height: 38px; border: 0; border-radius: 10px; background-color: var(--fill); font-size: 15px; max-width: 100%; -webkit-appearance: none; appearance: none; }
+.desk select { padding: 0 30px 0 13px; text-overflow: ellipsis; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238E8E93' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 11px center; }
+.filters-btn { padding: 0 16px; font-weight: 500; color: var(--accent); white-space: nowrap; }
+.filters-btn.on, .filters-btn[aria-expanded="true"] { background-color: var(--accent-soft); }
+.panel { background: var(--surface); border-radius: 16px; padding: 16px; display: grid; gap: 16px; box-shadow: var(--shadow); }
+.panel-row { display: grid; grid-template-columns: repeat(3, minmax(0, max-content)); gap: 12px 14px; align-items: end; }
+.field { display: grid; gap: 5px; min-width: 0; }
+.field > label { font-size: 12px; color: var(--muted); padding-left: 2px; }
+.credit { position: relative; }
+.credit input { width: 100px; padding: 0 10px 0 24px; }
+.credit::before { content: "$"; position: absolute; left: 11px; bottom: 9px; color: var(--muted); font-size: 15px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 0; background: var(--fill); border-radius: 999px; height: 32px; padding: 0 14px; font-size: 14px; font-weight: 500; }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+
+/* results */
+.main { padding-block: 18px 36px; }
+.layout { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+.summary { display: flex; justify-content: space-between; gap: 16px; margin: 0; padding: 0 16px 8px; font-size: 13px; color: var(--muted); }
+.list { list-style: none; margin: 0; padding: 0; background: var(--surface); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); }
+.row + .row::before { content: ""; display: block; height: 0.5px; background: var(--line); margin-left: 16px; }
+.row-open { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; width: 100%; text-align: left; border: 0; background: none; padding: 14px 16px; }
+.row-open:active { background: var(--fill); }
+.row.is-open .row-open { background: var(--accent-soft); }
+.row-info { display: grid; gap: 2px; min-width: 0; }
+.row-top { font-size: 13px; color: var(--muted); }
+.row-name { font-weight: 600; font-size: 17px; letter-spacing: -0.02em; line-height: 1.25; overflow-wrap: anywhere; }
+.row-meta { font-size: 14px; color: var(--muted); }
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--good); margin-right: 6px; vertical-align: 1px; }
+.dot.aging { background: var(--muted); }
+.dot.stale { background: var(--warn); }
+.stale-text { color: var(--warn); }
+.pay { display: grid; justify-items: end; gap: 1px; text-align: right; }
+.pay-num { font-family: var(--round); font-weight: 600; font-size: 22px; line-height: 1.1; letter-spacing: -0.02em; }
+.pay-sub { font-size: 12px; color: var(--muted); }
+.pay.covered .pay-num, .pay.covered .pay-sub { color: var(--good); }
+.empty { padding: 34px 16px; color: var(--muted); }
+.empty button, .more button { border: 0; background: none; color: var(--accent); font-weight: 500; padding: 0; font-size: inherit; }
+.more { padding-block: 16px; text-align: center; }
+.more button { font-size: 16px; padding: 6px 12px; }
+
+/* hotel view */
+.detail { display: none; }
+.detail-card { background: var(--surface); border-radius: 22px; padding: 18px; display: grid; gap: 20px; box-shadow: var(--shadow); }
+.grabber { display: none; }
+.d-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.btn-quiet { border: 0; background: var(--fill); border-radius: 999px; height: 32px; padding: 0 14px; font-size: 14px; font-weight: 600; color: var(--accent); }
+.btn-quiet[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.d-back { background: none; padding: 0; font-size: 17px; order: 2; }
+.d-head { display: grid; gap: 6px; }
+.d-name { margin: 0; font-weight: 700; font-size: 26px; letter-spacing: -0.026em; line-height: 1.12; text-wrap: balance; }
+.d-place { font-size: 14px; color: var(--muted); }
+.perks { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 15px; }
+.perks li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; align-items: start; }
+.perks li::before { content: ""; width: 16px; height: 16px; margin-top: 2px; border-radius: 50%; background: var(--good-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M4.6 8.3l2.3 2.3 4.5-5' fill='none' stroke='%2334A853' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+.sec-label { margin: 0 0 10px; font-size: 13px; color: var(--muted); }
+.cal-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.cal-month { font-weight: 600; font-size: 17px; letter-spacing: -0.02em; }
+.cal-nav button { width: 32px; height: 32px; border: 0; background: var(--fill); border-radius: 50%; font-size: 18px; line-height: 1; color: var(--accent); padding: 0 0 2px; }
+.cal-nav button:disabled { opacity: 0.35; cursor: default; }
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.dow { font-size: 11px; font-weight: 600; color: var(--muted); text-align: center; padding-bottom: 2px; }
+.cell { min-height: 48px; border: 0; border-radius: 10px; padding: 5px 2px 6px; display: grid; align-content: space-between; justify-items: center; background: var(--h5); color: var(--h5-ink); min-width: 0; }
+.cell .dn { font-size: 11px; font-weight: 500; opacity: 0.8; }
+.cell .pr { font-size: 11.5px; font-weight: 600; letter-spacing: -0.03em; }
+.cell.q1 { background: var(--h1); color: var(--h1-ink); }
+.cell.q2 { background: var(--h2); color: var(--h2-ink); }
+.cell.q3 { background: var(--h3); color: var(--h3-ink); }
+.cell.q4 { background: var(--h4); color: var(--h4-ink); }
+.cell.q5 { background: var(--h5); color: var(--h5-ink); }
+.cell.off { background: none; color: var(--muted); cursor: default; }
+.cell.blank { background: none; }
+.cell.in-stay { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ink); position: relative; z-index: 1; }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 12px; font-size: 12px; color: var(--muted); }
+.legend .sw { display: inline-flex; gap: 3px; }
+.legend .sw i { width: 14px; height: 14px; border-radius: 4px; }
+
+/* stay breakdown */
+.folio { background: var(--bg); border-radius: 16px; padding: 14px 16px; display: grid; gap: 0; }
+.folio-title { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; font-size: 15px; padding-bottom: 8px; }
+.folio-title b { font-weight: 600; }
+.folio-title span { color: var(--muted); }
+.fl { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 15px; padding-block: 8px; border-top: 0.5px solid var(--line); }
+.fl .lead { display: none; }
+.fl .v { white-space: nowrap; }
+.fl.minus .v { color: var(--good); }
+.fl.sub { color: var(--muted); }
+.fl.total { font-weight: 600; font-size: 17px; align-items: center; padding-top: 12px; }
+.fl.total .v { font-family: var(--round); font-size: 30px; font-weight: 600; line-height: 1; letter-spacing: -0.02em; }
+.fl.total.covered .v { color: var(--good); }
+.folio-note { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+.cta { display: grid; gap: 10px; }
+.btn-go { display: flex; align-items: center; justify-content: center; min-height: 50px; text-align: center; text-decoration: none; background: var(--accent); color: var(--accent-ink); font-weight: 600; font-size: 17px; padding: 10px 16px; border-radius: 14px; }
+.fresh { font-size: 13px; color: var(--muted); margin: 0; text-align: center; }
+.placeholder { color: var(--muted); padding: 30px 6px; text-align: center; }
+
+/* freshness and small print */
+.health { padding-block: 0 4px; }
+.health .inner { display: grid; gap: 10px; border-top: 0.5px solid var(--line); padding-top: 22px; }
+.health h2 { margin: 0; font-weight: 600; font-size: 15px; }
+.health p { margin: 0; color: var(--muted); font-size: 13px; }
+.bar-track { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--fill); max-width: 360px; }
+.bar-track i { display: block; }
+.bar-track .b-fresh { background: var(--good); }
+.bar-track .b-aging { background: var(--muted); }
+.bar-track .b-stale { background: var(--warn); }
+.bar-key { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--muted); }
+.foot { padding-block: 18px 36px; font-size: 12px; color: var(--muted); }
+.foot p { margin: 0 0 6px; max-width: 78ch; }
+
+@media (max-width: 959px) {
+  body.detail-open { overflow: hidden; }
+  body.detail-open .detail { display: block; position: fixed; inset: 0; z-index: 50; overflow-y: auto; background: var(--scrim); padding-top: calc(env(safe-area-inset-top, 0px) + 18px); }
+  .detail-card { border-radius: 20px 20px 0 0; box-shadow: none; min-height: 100%; padding-top: 8px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 28px); align-content: start; }
+  .grabber { display: block; width: 36px; height: 5px; border-radius: 3px; background: var(--fill); margin: 0 auto -8px; }
+  .row.is-open .row-open { background: none; }
+  .ctl-row .seg { flex: 1 1 100%; display: flex; }
+  .ctl-row .seg button { flex: 1; }
+  .ctl-row select, .filters-btn { flex: 1 1 0; min-width: 0; }
+  .panel-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .panel select, .credit input { width: 100%; }
+  .panel-row .field:nth-child(2) { grid-column: 1 / -1; order: 3; }
+}
+@media (min-width: 960px) {
+  .layout { grid-template-columns: minmax(0, 1fr) 420px; }
+  .detail { display: block; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 66px); }
+  .d-back { display: none; }
+  .hero { padding-block: 44px 8px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .chip, .seg button, .cell, .row-open { transition: color .15s, background-color .15s; }
+  body.detail-open .detail { animation: sheet .26s cubic-bezier(.2, .8, .2, 1); }
+  @keyframes sheet { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+}
+</style>
+</head>
+<body>
+
+
+<header class="bar gutter">
+  <div class="inner"><span class="brand">Late Checkout</span><span class="window" id="window"></span></div>
+</header>
+
+<section class="hero gutter">
+  <div class="inner">
+    <h1>The cheapest nights for your hotel credit.</h1>
+    <p class="lede">Fine Hotels + Resorts and The Hotel Collection, priced after your Platinum credit.</p>
+    <p class="sample" id="strip" hidden><span class="sample-tag">Sample data</span>These hotels and prices are invented. Real rates appear after the first price update.</p>
+  </div>
+</section>
+
+<section class="desk gutter" aria-label="Search and filters">
+  <div class="inner">
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M12.2 12.2 16 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+      <input id="q" type="search" placeholder="City, country or hotel" autocomplete="off" aria-label="Search by city, country or hotel">
+    </div>
+    <div class="ctl-row">
+      <div class="seg" role="group" aria-label="Collection" id="seg-prog">
+        <button type="button" data-v="all" aria-pressed="true">Both</button>
+        <button type="button" data-v="FHR" aria-pressed="false">FHR</button>
+        <button type="button" data-v="THC" aria-pressed="false">THC</button>
+      </div>
+      <select id="when" aria-label="Dates"></select>
+      <select id="nights" aria-label="Nights">
+        <option value="1">1 night</option><option value="2">2 nights</option><option value="3">3 nights</option>
+      </select>
+      <button type="button" class="filters-btn" id="filters-btn" aria-expanded="false" aria-controls="filters-panel">Filters</button>
+    </div>
+    <div class="panel" id="filters-panel" hidden>
+      <div class="panel-row">
+        <div class="field"><label for="region">Region</label><select id="region"><option value="all">Anywhere</option></select></div>
+        <div class="field"><label for="sort">Sort by</label>
+          <select id="sort">
+            <option value="pay">You pay, lowest first</option>
+            <option value="rate">Nightly rate, lowest first</option>
+            <option value="rate-desc">Nightly rate, highest first</option>
+            <option value="perks">Most perk value</option>
+          </select>
+        </div>
+        <div class="field credit"><label for="credit">Credit left</label><input id="credit" type="number" inputmode="numeric" min="0" max="600" step="25" value="300"></div>
+      </div>
+      <div class="chips" role="group" aria-label="Quick filters" id="chips">
+        <button type="button" class="chip" data-c="covered" aria-pressed="false">Fully covered</button>
+        <button type="button" class="chip" data-c="spa" aria-pressed="false">Spa credit</button>
+        <button type="button" class="chip" data-c="fb" aria-pressed="false">Food and drink credit</button>
+        <button type="button" class="chip" data-c="offer" aria-pressed="false">Free-night offer</button>
+        <button type="button" class="chip" data-c="saved" aria-pressed="false">Saved</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="main gutter">
+  <div class="inner layout">
+    <section aria-label="Results">
+      <p class="summary" id="summary" aria-live="polite"></p>
+      <ul class="list" id="list"></ul>
+      <div class="more" id="more" hidden><button type="button" class="btn-quiet" id="more-btn">Show more hotels</button></div>
+    </section>
+    <aside class="detail" id="detail" aria-label="Hotel prices"></aside>
+  </div>
+</main>
+
+<section class="health gutter" aria-label="Price freshness">
+  <div class="inner">
+    <h2>Price freshness</h2>
+    <div class="bar-track" id="bar" role="img"></div>
+    <div class="bar-key" id="bar-key"></div>
+    <p id="health-note" hidden></p>
+  </div>
+</section>
+
+<footer class="foot gutter">
+  <div class="inner">
+    <p>The hotel credit is $300 per half-year on prepaid bookings through Amex Travel. The Hotel Collection needs two nights, and from January 1, 2027 so does Fine Hotels + Resorts.</p>
+    <p>Live rates are the best nightly price on Google Hotels before tax, a stand-in for the Amex rate, which is sometimes higher. Confirm on Amex Travel before you book. Independent project, not affiliated with American Express.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var DAY = 86400000;
+  var now = new Date();
+  var T = { y: now.getFullYear(), m: now.getMonth(), d: now.getDate() };
+  var T_UTC = Date.UTC(T.y, T.m, T.d);
+  function dateAt(i) { return new Date(T.y, T.m, T.d + i); }
+  function idxOf(y, m, d) { return Math.round((Date.UTC(y, m, d) - T_UTC) / DAY); }
+  function rnd(a, b) {
+    var x = Math.imul(a ^ 0x9E3779B9, 0x85EBCA6B) ^ Math.imul(b + 0x7F4A7C15, 0xC2B2AE35);
+    x ^= x >>> 15; x = Math.imul(x, 0x2C1B3C6D); x ^= x >>> 12; x = Math.imul(x, 0x297A2D39); x ^= x >>> 15;
+    return (x >>> 0) / 4294967296;
+  }
+  function finish(h) { h.hay = (h.name + ' ' + h.city + ' ' + h.country + ' ' + h.region).toLowerCase(); return h; }
+
+  /* ---- sample catalog, used until data/prices.json holds real prices.
+          name, city, country, region, collection, credit type, base rate, weekend multiplier,
+          seasonal swing, peak day of year, tax rate, nightly resort fee, free-night offer ---- */
+  var RAW = [
+    ['The Copper Dune', 'Las Vegas', 'United States', 'United States and Canada', 'FHR', 'Spa', 150, 1.9, .15, 100, .1338, 50, 0],
+    ['Marquee Row Hotel', 'Las Vegas', 'United States', 'United States and Canada', 'FHR', 'Food and beverage', 210, 1.8, .15, 100, .1338, 55, 0],
+    ['Alder & Tide', 'Seattle', 'United States', 'United States and Canada', 'FHR', 'Property', 290, 1.1, .30, 200, .157, 0, 0],
+    ['Pier Nine House', 'Seattle', 'United States', 'United States and Canada', 'THC', 'Food and beverage', 215, 1.1, .28, 200, .157, 0, 0],
+    ['The Brass Finch', 'New Orleans', 'United States', 'United States and Canada', 'FHR', 'Food and beverage', 230, 1.3, .20, 80, .1675, 0, 0],
+    ['Saguaro Court', 'Tucson', 'United States', 'United States and Canada', 'FHR', 'Spa', 205, 1.15, .35, 60, .1205, 35, 0],
+    ['Mesa Verde Club', 'Scottsdale', 'United States', 'United States and Canada', 'FHR', 'Spa', 340, 1.2, .35, 70, .1427, 45, 0],
+    ['Gaslamp & Moss', 'Savannah', 'United States', 'United States and Canada', 'THC', 'Property', 190, 1.35, .18, 100, .13, 0, 0],
+    ['Hotel Fogline', 'San Francisco', 'United States', 'United States and Canada', 'FHR', 'Food and beverage', 265, 1.05, .18, 270, .1425, 0, 0],
+    ['The Larkspur Tower', 'New York', 'United States', 'United States and Canada', 'FHR', 'Food and beverage', 620, 1.1, .25, 330, .1475, 0, 0],
+    ['Canal Street Assembly', 'New York', 'United States', 'United States and Canada', 'THC', 'Property', 330, 1.15, .25, 330, .1475, 0, 0],
+    ['Lakefront Meridian', 'Chicago', 'United States', 'United States and Canada', 'FHR', 'Spa', 280, 1.2, .35, 190, .174, 0, 0],
+    ['Coral Tide Resort', 'Miami Beach', 'United States', 'United States and Canada', 'FHR', 'Property', 480, 1.3, .30, 45, .14, 48, 3],
+    ['Halekai Shores', 'Honolulu', 'United States', 'United States and Canada', 'FHR', 'Property', 540, 1.05, .15, 200, .1796, 52, 4],
+    ['Coal Harbour Loft', 'Vancouver', 'Canada', 'United States and Canada', 'THC', 'Property', 225, 1.1, .30, 200, .18, 0, 0],
+    ['Hotel Kumoi', 'Tokyo', 'Japan', 'Asia', 'FHR', 'Food and beverage', 510, 1.15, .25, 95, .15, 0, 0],
+    ['Shiba Garden Tower', 'Tokyo', 'Japan', 'Asia', 'THC', 'Property', 260, 1.15, .22, 95, .15, 0, 0],
+    ['Kamo River Inn', 'Kyoto', 'Japan', 'Asia', 'FHR', 'Spa', 590, 1.2, .30, 320, .15, 0, 3],
+    ['Dotonbori Lantern', 'Osaka', 'Japan', 'Asia', 'THC', 'Food and beverage', 180, 1.2, .20, 95, .15, 0, 0],
+    ['Jade Lantern Taipei', 'Taipei', 'Taiwan', 'Asia', 'FHR', 'Food and beverage', 245, 1.1, .12, 300, .155, 0, 0],
+    ['Maison Lac Hong', 'Hanoi', 'Vietnam', 'Asia', 'FHR', 'Property', 165, 1.05, .15, 320, .15, 0, 0],
+    ['Chao Phraya Pavilion', 'Bangkok', 'Thailand', 'Asia', 'FHR', 'Spa', 185, 1.05, .22, 10, .177, 0, 3],
+    ['Harbour Nine', 'Hong Kong', 'Hong Kong', 'Asia', 'FHR', 'Food and beverage', 320, 1.15, .18, 300, .13, 0, 0],
+    ['Orchard Atelier', 'Singapore', 'Singapore', 'Asia', 'THC', 'Property', 240, 1.1, .10, 180, .199, 0, 0],
+    ['Harbour Fig', 'Sydney', 'Australia', 'Australia and Pacific', 'FHR', 'Food and beverage', 345, 1.2, .25, 5, .10, 0, 3],
+    ['The Wren & Crown', 'London', 'United Kingdom', 'Europe', 'FHR', 'Food and beverage', 560, 1.05, .20, 180, .20, 0, 0],
+    ['Sulis Court', 'Bath', 'United Kingdom', 'Europe', 'FHR', 'Spa', 275, 1.3, .22, 190, .20, 0, 0],
+    ['Hôtel des Lucioles', 'Paris', 'France', 'Europe', 'FHR', 'Food and beverage', 690, 1.05, .22, 170, .10, 0, 0],
+    ['Casa Tinta', 'Lisbon', 'Portugal', 'Europe', 'THC', 'Property', 195, 1.15, .30, 200, .06, 0, 0],
+    ['Palazzo Verbena', 'Rome', 'Italy', 'Europe', 'FHR', 'Property', 520, 1.1, .28, 150, .10, 0, 3],
+    ['Casa Jacaranda', 'Mexico City', 'Mexico', 'Mexico and Caribbean', 'FHR', 'Spa', 255, 1.1, .12, 80, .19, 0, 0],
+    ['Arco Blanco Resort', 'Los Cabos', 'Mexico', 'Mexico and Caribbean', 'FHR', 'Property', 610, 1.15, .30, 30, .19, 0, 4],
+    ['Recoleta Azul', 'Buenos Aires', 'Argentina', 'Central and South America', 'THC', 'Property', 170, 1.1, .15, 300, .21, 0, 0],
+    ['Pearl Corniche', 'Doha', 'Qatar', 'Middle East and Africa', 'FHR', 'Spa', 175, 1.1, .25, 20, .10, 0, 0],
+    ['Dune Line Residences', 'Dubai', 'United Arab Emirates', 'Middle East and Africa', 'FHR', 'Food and beverage', 390, 1.15, .32, 15, .217, 0, 0]
+  ];
+  function sampleHotels(H) {
+    var todayAbs = Math.floor(T_UTC / DAY);
+    return RAW.map(function (r, n) {
+      var h = { id: 'h' + n, name: r[0], city: r[1], country: r[2], region: r[3], program: r[4], creditType: r[5],
+        creditAmt: 100, breakfast: r[4] === 'FHR', tax: r[10], taxEst: true, fee: r[11], offerN: r[12], url: '', rates: [] };
+      var seed = 1000 + n * 37;
+      for (var i = 0; i < H; i++) {
+        var d = dateAt(i), dow = d.getDay();
+        var doy = Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 1)) / DAY);
+        var p = r[6] * ((dow === 5 || dow === 6) ? r[7] : 1) * (1 + r[8] * Math.cos(2 * Math.PI * (doy - r[9]) / 365)) * (0.9 + 0.22 * rnd(seed, todayAbs + i));
+        if ((d.getMonth() === 11 && d.getDate() >= 23) || (d.getMonth() === 0 && d.getDate() <= 1)) p *= 1.35;
+        h.rates.push(rnd(seed + 7, todayAbs + i) < 0.04 ? null : Math.round(p));
+      }
+      var u = rnd(seed, 999); h.checkedH = Math.floor(u * u * 70) + 1;
+      return finish(h);
+    });
+  }
+
+  /* ---- real prices, as written by scripts/update_prices.py ---- */
+  function liveHotels(d, H) {
+    var out = [], defTax = (d.meta && d.meta.default_tax) || 0.15, nowS = Date.now() / 1000;
+    (d.hotels || []).forEach(function (e) {
+      if (!e.r || !e.s || !e.t) return;
+      var p = e.s.split('-'), off = -idxOf(+p[0], +p[1] - 1, +p[2]), rates = [], any = false;
+      for (var i = 0; i < H; i++) { var v = e.r[i + off]; v = (typeof v === 'number') ? v : null; if (v != null) any = true; rates.push(v); }
+      if (!any) return;
+      out.push(finish({ id: e.id, name: e.n, city: e.c || '', country: e.k || '', region: e.g || 'Other', program: e.p,
+        creditType: e.ct || 'Property', creditAmt: e.ca || 100, breakfast: !!e.b, tax: e.x ? e.x - 1 : defTax, taxEst: !e.x,
+        fee: 0, offerN: 0, url: e.u || '', checkedH: Math.max(1, Math.round((nowS - e.t) / 3600)), rates: rates }));
+    });
+    return out;
+  }
+
+  var ALIAS = { usa: 'united states', us: 'united states', 'u.s.': 'united states', america: 'united states', states: 'united states',
+    uk: 'united kingdom', england: 'united kingdom', britain: 'united kingdom', vegas: 'las vegas', nyc: 'new york',
+    sf: 'san francisco', nola: 'new orleans', hk: 'hong kong', uae: 'united arab emirates', cabo: 'los cabos' };
+
+  function boot(HOTELS, live, file, HORIZON) {
+    var BY_ID = {}; HOTELS.forEach(function (h) { BY_ID[h.id] = h; });
+    var $ = function (id) { return document.getElementById(id); };
+    var PAGE = 60;
+
+    /* ---- stay maths ---- */
+    var FHR_MIN = (T_UTC >= Date.UTC(2027, 0, 1)) ? 2 : 1;
+    function minNights(h) { return h.program === 'THC' ? 2 : FHR_MIN; }
+    function stayAt(h, start, nights) {
+      if (start < 0 || start + nights > HORIZON) return null;
+      var rates = [], sum = 0;
+      for (var k = 0; k < nights; k++) { var r = h.rates[start + k]; if (r == null) return null; rates.push(r); sum += r; }
+      var free = (h.offerN && nights >= h.offerN) ? rates[h.offerN - 1] : 0;
+      var room = sum - free, tax = Math.round(room * h.tax), fees = h.fee * nights;
+      return { start: start, nights: nights, rates: rates, free: free, room: room, tax: tax, fees: fees, prepaid: room + tax };
+    }
+    function settle(s, credit) { var applied = Math.min(credit, s.prepaid); return { applied: applied, due: s.prepaid - applied + s.fees }; }
+    function bestStay(h, nights, from, to, credit) {
+      var best = -1, bestDue = Infinity, bestPre = Infinity, r = h.rates, last = Math.min(to, HORIZON - nights + 1);
+      for (var i = Math.max(0, from); i < last; i++) {
+        var sum = 0, ok = true;
+        for (var k = 0; k < nights; k++) { var v = r[i + k]; if (v == null) { ok = false; break; } sum += v; }
+        if (!ok) continue;
+        if (h.offerN && nights >= h.offerN) sum -= r[i + h.offerN - 1];
+        var pre = sum + Math.round(sum * h.tax), due = Math.max(0, pre - credit) + h.fee * nights;
+        if (due < bestDue || (due === bestDue && pre < bestPre)) { best = i; bestDue = due; bestPre = pre; }
+      }
+      return best < 0 ? null : stayAt(h, best, nights);
+    }
+    function perkValue(h, nights) { return h.creditAmt + (h.breakfast ? 60 * nights : 0); }
+
+    /* ---- formatting ---- */
+    function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+    var F_DAY = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    var F_MON = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' });
+    var F_MON_S = new Intl.DateTimeFormat('en-US', { month: 'long' });
+    var F_MON_OPT = new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' });
+    var F_WHEN = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function ord(n) { return n === 3 ? '3rd' : n + 'th'; }
+    function ago(hh) { return hh < 24 ? hh + 'h ago' : Math.floor(hh / 24) + 'd ago'; }
+    function freshClass(hh) { return hh > 48 ? 'stale' : hh > 24 ? 'aging' : ''; }
+    function nightsWord(n) { return n + (n === 1 ? ' night' : ' nights'); }
+    function place(h) { return h.city ? h.city + ', ' + h.country : h.country; }
+    function creditText(h) { return '$' + h.creditAmt + ' ' + h.creditType.toLowerCase() + ' credit'; }
+
+    /* ---- state ---- */
+    var store = { get: function (k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+                  set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+    var st = { q: '', program: 'all', nights: 1, when: 'any', region: 'all', sort: 'pay', chips: {}, credit: 300,
+               saved: {}, openId: null, selStart: 0, calM: 0, limit: PAGE };
+    (store.get('lc.saved') || []).forEach(function (id) { if (BY_ID[id]) st.saved[id] = true; });
+    var c0 = store.get('lc.credit'); if (typeof c0 === 'number' && c0 >= 0 && c0 <= 600) st.credit = c0;
+    var wide = window.matchMedia('(min-width: 960px)');
+
+    /* ---- page furniture that depends on the data ---- */
+    $('strip').hidden = live;
+    var MONTHS = [];
+    (function () {
+      var last = dateAt(HORIZON - 1), html = '<option value="any">Any date</option>';
+      for (var m = 0; ; m++) {
+        var first = new Date(T.y, T.m + m, 1);
+        if (first > last) break;
+        var from = Math.max(0, idxOf(first.getFullYear(), first.getMonth(), 1));
+        var to = Math.min(HORIZON, idxOf(first.getFullYear(), first.getMonth() + 1, 1));
+        MONTHS.push({ from: from, to: to, label: F_MON.format(first), short: F_MON_S.format(first) });
+        html += '<option value="' + m + '">' + F_MON_OPT.format(first) + '</option>';
+      }
+      $('when').innerHTML = html;
+      var counts = {}; HOTELS.forEach(function (h) { counts[h.region] = (counts[h.region] || 0) + 1; });
+      $('region').innerHTML = '<option value="all">Anywhere</option>' + Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; })
+        .map(function (r) { return '<option value="' + esc(r) + '">' + esc(r) + '</option>'; }).join('');
+      var has = { spa: false, fb: false, offer: false };
+      HOTELS.forEach(function (h) { if (h.creditType === 'Spa') has.spa = true; if (h.creditType === 'Food and beverage') has.fb = true; if (h.offerN) has.offer = true; });
+      Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (c) { if (c.dataset.c in has) c.hidden = !has[c.dataset.c]; });
+      var firstHalf = T.m < 6, end = firstHalf ? Date.UTC(T.y, 5, 30) : Date.UTC(T.y, 11, 31), left = Math.round((end - T_UTC) / DAY);
+      $('window').innerHTML = '<b>' + left + (left === 1 ? ' day' : ' days') + '</b> left on ' + (firstHalf ? 'Jan–Jun' : 'Jul–Dec') + ' credit';
+    })();
+    function windowRange() { return st.when === 'any' ? { from: 0, to: HORIZON } : MONTHS[+st.when]; }
+
+    /* ---- results ---- */
+    var results = [];
+    function effNights(h) { return Math.max(st.nights, minNights(h)); }
+    function compute() {
+      var q = st.q.trim().toLowerCase(); if (ALIAS[q]) q = ALIAS[q];
+      var words = q ? q.split(/\s+/) : [], w = windowRange();
+      results = [];
+      HOTELS.forEach(function (h) {
+        if (st.program !== 'all' && h.program !== st.program) return;
+        if (st.region !== 'all' && h.region !== st.region) return;
+        for (var i = 0; i < words.length; i++) if (h.hay.indexOf(words[i]) < 0) return;
+        if (st.chips.spa && h.creditType !== 'Spa') return;
+        if (st.chips.fb && h.creditType !== 'Food and beverage') return;
+        if (st.chips.offer && !h.offerN) return;
+        if (st.chips.saved && !st.saved[h.id]) return;
+        var n = effNights(h), s = bestStay(h, n, w.from, w.to, st.credit); if (!s) return;
+        var set = settle(s, st.credit);
+        if (st.chips.covered && set.due > 0) return;
+        results.push({ h: h, s: s, due: set.due, applied: set.applied, avg: Math.round(s.room / n), perks: perkValue(h, n) });
+      });
+      results.sort({ pay: function (a, b) { return a.due - b.due || a.s.prepaid - b.s.prepaid; },
+                     rate: function (a, b) { return a.avg - b.avg; },
+                     'rate-desc': function (a, b) { return b.avg - a.avg; },
+                     perks: function (a, b) { return b.perks - a.perks || a.due - b.due; } }[st.sort]);
+    }
+    function renderList() {
+      var w = windowRange(), covered = 0;
+      results.forEach(function (r) { if (r.due === 0) covered++; });
+      $('summary').innerHTML = results.length
+        ? '<span>' + results.length.toLocaleString('en-US') + (results.length === 1 ? ' hotel' : ' hotels') + (covered ? ' · ' + covered.toLocaleString('en-US') + ' fully covered' : '') + '</span><span>You pay</span>'
+        : '<span>No matches</span>';
+      $('more').hidden = results.length <= st.limit;
+      if (!results.length) {
+        $('list').innerHTML = '<li class="empty">No hotels match these filters. Try a country such as Japan, or <button type="button" id="clear">clear the filters</button>.</li>';
+        return;
+      }
+      $('list').innerHTML = results.slice(0, st.limit).map(function (r) {
+        var h = r.h, n = r.s.nights, fc = freshClass(h.checkedH), bumped = n > st.nights;
+        return '<li class="row' + (h.id === st.openId ? ' is-open' : '') + '"><button type="button" class="row-open" data-id="' + h.id + '">' +
+          '<span class="row-info">' +
+            '<span class="row-top">' + h.program + ' · ' + esc(place(h)) + (st.saved[h.id] ? ' · Saved' : '') + '</span>' +
+            '<span class="row-name">' + esc(h.name) + '</span>' +
+            '<span class="row-meta">' + F_DAY.format(dateAt(r.s.start)) + ' · ' + nightsWord(n) + (bumped ? ' minimum' : '') + ' · <span class="num">' + money(r.avg) + '</span> a night</span>' +
+            (fc === 'stale' ? '<span class="row-meta stale-text">Price checked ' + ago(h.checkedH) + '</span>' : '') +
+          '</span>' +
+          '<span class="pay' + (r.due === 0 ? ' covered' : '') + '"><span class="pay-num">' + money(r.due) + '</span>' +
+            '<span class="pay-sub">' + (r.due === 0 ? 'Covered' : 'of ' + money(r.s.prepaid + r.s.fees)) + '</span></span></button></li>';
+      }).join('');
+    }
+
+    /* ---- detail ---- */
+    function monthOfIdx(i) { var d = dateAt(i); return (d.getFullYear() - T.y) * 12 + d.getMonth() - T.m; }
+    function openHotel(id, overlay) {
+      var h = BY_ID[id]; if (!h) return;
+      var w = windowRange(), s = bestStay(h, effNights(h), w.from, w.to, st.credit) || bestStay(h, effNights(h), 0, HORIZON, st.credit);
+      st.openId = id; st.selStart = s ? s.start : 0; st.calM = monthOfIdx(st.selStart);
+      if (overlay) document.body.classList.add('detail-open');
+      renderList(); renderDetail();
+      if (overlay) $('detail').scrollTop = 0;
+    }
+    function closeDetail() { document.body.classList.remove('detail-open'); }
+    function fl(label, value, cls) { return '<div class="fl ' + (cls || '') + '"><span>' + label + '</span><span class="lead"></span><span class="v">' + value + '</span></div>'; }
+    function renderDetail() {
+      var el = $('detail'), h = BY_ID[st.openId];
+      if (!h) { el.innerHTML = '<div class="detail-card"><p class="placeholder">Pick a hotel to see its price calendar.</p></div>'; return; }
+      var n = effNights(h), s = stayAt(h, st.selStart, n), saved = !!st.saved[h.id], fc = freshClass(h.checkedH);
+      var perks = h.program === 'FHR'
+        ? [creditText(h) + ' per stay', 'Guaranteed 4 p.m. checkout', 'Noon check-in and room upgrade when available']
+        : [creditText(h) + ' per stay', 'Room upgrade, noon check-in and late checkout when available', 'Two-night minimum for benefits and the hotel credit'];
+      if (h.breakfast) perks.unshift('Daily breakfast for two');
+      if (h.offerN) perks.push(ord(h.offerN) + ' night free on stays of ' + h.offerN + ' nights or more');
+
+      var first = new Date(T.y, T.m + st.calM, 1), dim = new Date(T.y, T.m + st.calM + 1, 0).getDate();
+      var cells = ['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(function (d) { return '<div class="dow">' + d + '</div>'; }).join('');
+      for (var b = 0; b < first.getDay(); b++) cells += '<div class="cell blank"></div>';
+      var mr = [];
+      for (var e = 1; e <= dim; e++) { var j = idxOf(first.getFullYear(), first.getMonth(), e); if (j >= 0 && j < HORIZON && h.rates[j] != null) mr.push(h.rates[j]); }
+      mr.sort(function (a, c) { return a - c; });
+      var mq = [.2, .4, .6, .8].map(function (f) { return mr[Math.floor(f * (mr.length - 1))]; });
+      for (var d = 1; d <= dim; d++) {
+        var i = idxOf(first.getFullYear(), first.getMonth(), d), r = (i >= 0 && i < HORIZON) ? h.rates[i] : undefined;
+        var inStay = s && i >= s.start && i < s.start + n;
+        if (r == null) { cells += '<div class="cell off' + (inStay ? ' in-stay' : '') + '"><span class="dn">' + d + '</span><span class="pr">' + (r === null ? '–' : '') + '</span></div>'; continue; }
+        var qc = r <= mq[0] ? 'q1' : r <= mq[1] ? 'q2' : r <= mq[2] ? 'q3' : r <= mq[3] ? 'q4' : 'q5';
+        cells += '<button type="button" class="cell ' + qc + (inStay ? ' in-stay' : '') + '" data-idx="' + i + '" aria-label="' + F_DAY.format(dateAt(i)) + ', ' + money(r) + '"' + (i === st.selStart ? ' aria-current="date"' : '') + '>' +
+          '<span class="dn">' + d + '</span><span class="pr">' + money(r) + '</span></button>';
+      }
+
+      var folio;
+      if (!s) {
+        folio = '<div class="folio"><div class="folio-title"><b>' + F_DAY.format(dateAt(st.selStart)) + '</b></div><p class="folio-note">No price for ' + nightsWord(n) + ' from this date. Pick another check-in day.</p></div>';
+      } else {
+        var set = settle(s, st.credit), lines = '';
+        s.rates.forEach(function (rt, k) { lines += fl(F_DAY.format(dateAt(s.start + k)), money(rt)); });
+        if (s.free) lines += fl(ord(h.offerN) + ' night free', '−' + money(s.free), 'minus');
+        lines += fl(h.taxEst ? 'Estimated taxes and fees' : 'Taxes and fees', money(s.tax), 'sub');
+        lines += fl('Prepaid at booking', money(s.prepaid));
+        lines += fl('Hotel credit', '−' + money(set.applied), 'minus');
+        if (s.fees) lines += fl('Resort fee, paid at the hotel', money(s.fees), 'sub');
+        lines += fl('You pay', money(set.due), 'total' + (set.due === 0 ? ' covered' : ''));
+        var leftover = st.credit - set.applied;
+        folio = '<div class="folio"><div class="folio-title"><b>' + F_DAY.format(dateAt(s.start)) + ' to ' + F_DAY.format(dateAt(s.start + n)) + '</b><span>' + nightsWord(n) + '</span></div>' + lines +
+          '<p class="folio-note">You also get about ' + money(perkValue(h, n)) + ' in perks' + (h.breakfast ? ', counting breakfast at $30 a person' : '') + '.' +
+          (leftover > 0 && set.applied > 0 ? ' ' + money(leftover) + ' of your credit goes unused on this stay.' : '') + '</p></div>';
+      }
+
+      el.innerHTML = '<div class="detail-card">' +
+        '<div class="grabber" aria-hidden="true"></div>' +
+        '<div class="d-bar"><button type="button" class="btn-quiet d-back" id="back">Done</button>' +
+          '<button type="button" class="btn-quiet" id="save" aria-pressed="' + saved + '">' + (saved ? 'Saved' : 'Save') + '</button></div>' +
+        '<div class="d-head"><h2 class="d-name">' + esc(h.name) + '</h2>' +
+          '<div class="d-place">' + (h.program === 'FHR' ? 'Fine Hotels + Resorts' : 'The Hotel Collection') + ' · ' + esc(place(h)) + '</div></div>' +
+        '<ul class="perks">' + perks.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' +
+        '<div><p class="sec-label">Nightly rate, before tax</p>' +
+          '<div class="cal-nav"><button type="button" id="prev" aria-label="Previous month"' + (st.calM <= 0 ? ' disabled' : '') + '>‹</button>' +
+            '<span class="cal-month">' + F_MON.format(first) + '</span>' +
+            '<button type="button" id="next" aria-label="Next month"' + (st.calM >= MONTHS.length - 1 ? ' disabled' : '') + '>›</button></div>' +
+          '<div class="cal">' + cells + '</div>' +
+          '<div class="legend"><span class="sw"><i style="background:var(--h1)"></i><i style="background:var(--h2)"></i><i style="background:var(--h3)"></i><i style="background:var(--h4)"></i><i style="background:var(--h5)"></i></span><span>Darker is cheaper this month. Tap a date to price a stay.</span></div></div>' +
+        folio +
+        '<div class="cta"><a class="btn-go" href="' + esc(h.url || 'https://www.americanexpress.com/en-us/travel/') + '" target="_blank" rel="noopener">Confirm this date on Amex Travel</a>' +
+          '<p class="fresh' + (fc === 'stale' ? ' stale-text' : '') + '"><i class="dot ' + fc + '"></i>Prices checked ' + ago(h.checkedH) + '.' + (fc === 'stale' ? ' This is older than 48 hours, so expect it to have moved.' : ' The rate can change before you book.') + '</p></div>' +
+      '</div>';
+    }
+
+    /* ---- freshness ---- */
+    (function () {
+      var f = 0, a = 0, s = 0, t = HOTELS.length;
+      HOTELS.forEach(function (h) { if (h.checkedH > 48) s++; else if (h.checkedH > 24) a++; else f++; });
+      $('bar').innerHTML = '<i class="b-fresh" style="width:' + (f / t * 100) + '%"></i><i class="b-aging" style="width:' + (a / t * 100) + '%"></i><i class="b-stale" style="width:' + (s / t * 100) + '%"></i>';
+      $('bar').setAttribute('aria-label', f + ' hotels checked within 24 hours, ' + a + ' within 48 hours, ' + s + ' older');
+      $('bar-key').innerHTML = '<span><i class="dot"></i>' + f.toLocaleString('en-US') + ' checked today</span><span><i class="dot aging"></i>' + a.toLocaleString('en-US') + ' a day old</span><span><i class="dot stale"></i>' + s.toLocaleString('en-US') + ' over 48 hours</span>';
+      if (live && file && file.meta) {
+        var m = file.meta, when = m.generated_at ? new Date(m.generated_at) : null;
+        $('health-note').textContent = t.toLocaleString('en-US') + ' of ' + (m.in_scope || t).toLocaleString('en-US') + ' tracked hotels have prices so far.' +
+          (when && !isNaN(when) ? ' Last update ran ' + F_WHEN.format(when) + '.' : '');
+        $('health-note').hidden = false;
+      }
+    })();
+
+    /* ---- wiring ---- */
+    function syncFilters() {
+      var n = st.region !== 'all' ? 1 : 0;
+      Object.keys(st.chips).forEach(function (k) { if (st.chips[k]) n++; });
+      $('filters-btn').textContent = n ? 'Filters · ' + n : 'Filters';
+      $('filters-btn').classList.toggle('on', n > 0);
+    }
+    function refresh() {
+      st.limit = PAGE; compute(); renderList(); syncFilters();
+      if (st.openId) { var h = BY_ID[st.openId]; if (!stayAt(h, st.selStart, effNights(h))) { var s = bestStay(h, effNights(h), 0, HORIZON, st.credit); if (s) { st.selStart = s.start; st.calM = monthOfIdx(s.start); } } }
+      renderDetail();
+    }
+    function seg(id, key, cast) {
+      $(id).addEventListener('click', function (e) {
+        var b = e.target.closest('button'); if (!b) return;
+        st[key] = cast ? +b.dataset.v : b.dataset.v;
+        Array.prototype.forEach.call(this.querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        refresh();
+      });
+    }
+    seg('seg-prog', 'program');
+    $('nights').addEventListener('change', function () { st.nights = +this.value; refresh(); });
+    $('filters-btn').addEventListener('click', function () {
+      var open = this.getAttribute('aria-expanded') !== 'true';
+      this.setAttribute('aria-expanded', String(open)); $('filters-panel').hidden = !open;
+    });
+    var qTimer = null;
+    $('q').addEventListener('input', function () { var v = this.value; clearTimeout(qTimer); qTimer = setTimeout(function () { st.q = v; refresh(); }, 140); });
+    $('when').addEventListener('change', function () { st.when = this.value; refresh(); });
+    $('region').addEventListener('change', function () { st.region = this.value; refresh(); });
+    $('sort').addEventListener('change', function () { st.sort = this.value; refresh(); });
+    $('credit').value = st.credit;
+    $('credit').addEventListener('input', function () { var v = Math.max(0, Math.min(600, Math.round(+this.value || 0))); st.credit = v; store.set('lc.credit', v); refresh(); });
+    $('chips').addEventListener('click', function (e) {
+      var b = e.target.closest('.chip'); if (!b) return;
+      var on = !st.chips[b.dataset.c]; st.chips[b.dataset.c] = on; b.setAttribute('aria-pressed', String(on)); refresh();
+    });
+    $('more-btn').addEventListener('click', function () { st.limit += PAGE; renderList(); });
+    $('list').addEventListener('click', function (e) {
+      if (e.target.closest('#clear')) {
+        st.q = ''; st.program = 'all'; st.region = 'all'; st.when = 'any'; st.chips = {};
+        $('q').value = ''; $('when').value = 'any'; $('region').value = 'all';
+        Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (x) { x.setAttribute('aria-pressed', 'false'); });
+        Array.prototype.forEach.call($('seg-prog').querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', String(x.dataset.v === 'all')); });
+        refresh(); return;
+      }
+      var b = e.target.closest('.row-open'); if (b) openHotel(b.dataset.id, !wide.matches);
+    });
+    $('detail').addEventListener('click', function (e) {
+      if (e.target === this) { closeDetail(); return; }
+      var t = e.target.closest('button'); if (!t) return;
+      if (t.id === 'back') { closeDetail(); return; }
+      if (t.id === 'save') {
+        if (st.saved[st.openId]) delete st.saved[st.openId]; else st.saved[st.openId] = true;
+        store.set('lc.saved', Object.keys(st.saved)); compute(); renderList(); renderDetail(); return;
+      }
+      if (t.id === 'prev') { st.calM = Math.max(0, st.calM - 1); renderDetail(); return; }
+      if (t.id === 'next') { st.calM = Math.min(MONTHS.length - 1, st.calM + 1); renderDetail(); return; }
+      if (t.dataset.idx) { st.selStart = +t.dataset.idx; renderDetail(); }
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDetail(); });
+    var onWide = function () { if (wide.matches) { closeDetail(); if (!st.openId && results[0]) openHotel(results[0].h.id, false); } };
+    if (wide.addEventListener) wide.addEventListener('change', onWide);
+
+    compute(); renderList(); renderDetail(); onWide();
+    window.__lc = { live: live, count: HOTELS.length, results: function () { return results; } };
+  }
+
+  /* ---- load real prices if the updater has written any; otherwise show the sample ---- */
+  var started = false;
+  function start(data) {
+    if (started) return; started = true;
+    var H = 240, hotels = null;
+    try { if (data && data.hotels) { H = (data.meta && data.meta.horizon_days) || 240; hotels = liveHotels(data, H); if (!hotels.length) hotels = null; } } catch (e) { hotels = null; }
+    if (hotels) boot(hotels, true, data, H); else boot(sampleHotels(240), false, null, 240);
+  }
+  var timer = setTimeout(function () { start(null); }, 6000);
+  try {
+    fetch('data/prices.json', { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { clearTimeout(timer); start(d); }, function () { clearTimeout(timer); start(null); });
+  } catch (e) { clearTimeout(timer); start(null); }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+name: Update prices and publish site
+
+on:
+  schedule:
+    - cron: "23 10 * * *"   # every day at 10:23 UTC (about 2:23 or 3:23 am Pacific)
+  workflow_dispatch:
+    inputs:
+      max_searches:
+        description: "Searches to spend on this run (blank = normal daily budget)"
+        required: false
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: prices
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Prices live on a separate "data" branch that is overwritten each run,
+      # so the repository does not grow by a prices file every day.
+      - name: Restore the last prices
+        run: |
+          if git fetch --depth=1 origin data 2>/dev/null; then
+            git show FETCH_HEAD:prices.json > site/data/prices.json || git checkout -- site/data/prices.json
+            git show FETCH_HEAD:catalog.json > data/catalog.json || git checkout -- data/catalog.json
+          fi
+
+      - name: Refresh the hotel list (Mondays)
+        if: github.event_name == 'schedule'
+        run: |
+          if [ "$(date -u +%u)" = "1" ]; then
+            python3 scripts/build_catalog.py || echo "::warning::Hotel list refresh failed; keeping the current list"
+          fi
+
+      # A push only republishes the site. Searches are spent on the daily run
+      # or when you start the workflow by hand.
+      - name: Update prices
+        if: github.event_name != 'push'
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+          MAX_SEARCHES: ${{ inputs.max_searches }}
+        run: python3 scripts/update_prices.py
+
+      - name: Save prices
+        if: github.event_name != 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          tmp="$(mktemp -d)"
+          cp site/data/prices.json data/catalog.json "$tmp/"
+          cd "$tmp"
+          git init -q -b data
+          git add .
+          git -c user.name="price-updater" -c user.email="actions@users.noreply.github.com" commit -qm "Prices $(date -u +%F)"
+          git push -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" data
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Publish the site
+        id: deploy
+        uses: actions/deploy-pages@v4

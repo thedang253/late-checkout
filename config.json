@@ -1,0 +1,16 @@
+{
+  "monthly_searches": 250,
+  "horizon_days": 240,
+  "programs": ["FHR", "THC"],
+  "countries": [],
+  "regions": [],
+  "watchlist": [],
+  "max_hotels": 0,
+  "focus_max_rate": 400,
+  "focus_weight": 3,
+  "watch_refresh_hours": 24,
+  "currency": "USD",
+  "gl": "us",
+  "adults": 2,
+  "default_tax": 0.15
+}
